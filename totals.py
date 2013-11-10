@@ -5,42 +5,56 @@
 
 import json
 
-DATA_FILE = open('original_data/data_mozfest.json')
+class MozfestDataProcessor(object):
+    """Calculate mozfest tweets data totals"""
+    def __init__(self, data_file, export_file):
+        super(MozfestDataProcessor, self).__init__()
 
-INITIAL_DATA = json.load(DATA_FILE)
+        self.data_file = open(data_file)
+        self.export_file = open(export_file, 'w')
 
-def count_different_users():
-    """ Count total users """
-    pass
+        self.initial_data = json.load(self.data_file)
+        self.final_data = {}
 
-def count_total_tweets():
-    """ Count total tweets """
-    pass
+    def count_different_users(self):
+        """ Count total users """
+        pass
 
-def count_total_retweets():
-    """ Count total retweets """
-    pass
+    def count_total_tweets(self):
+        """ Count total tweets """
+        pass
 
-def awesome_count():
-    """ Count number os "awesome" """
-    pass
+    def count_total_retweets(self):
+        """ Count total retweets """
+        pass
 
-def count_geo_tweets():
-    """ Count total geolocalized tweets """
-    pass
+    def awesome_count(self):
+        """ Count number os "awesome" """
+        pass
 
-def count_extra_hashtags():
-    """ Count extra hashtags besides #mozfest_totals """
-    pass
+    def count_geo_tweets(self):
+        """ Count total geolocalized tweets """
+        pass
 
-def count_users_mentioned():
-    """ Count total mentioned users """
-    pass
+    def count_extra_hashtags(self):
+        """ Count extra hashtags besides #mozfest_totals """
+        pass
 
-FINAL_DATA = {}
+    def count_users_mentioned(self):
+        """ Count total mentioned users """
+        pass
 
-EXPORT_FILE = open('processed_data/mozfest_totals.json', 'w')
+    def process(self):
+        """ Do the process """
+        json.dump(self.final_data, self.export_file,
+                  indent=4, separators=(',', ': '))
+        self.export_file.close()
 
-json.dump(FINAL_DATA, EXPORT_FILE, indent=4, separators=(',', ': '))
+def main():
+    """ Start process """
+    data_processor = MozfestDataProcessor('original_data/data_mozfest.json',
+        'processed_data/mozfest_totals.json')
+    data_processor.process()
 
-EXPORT_FILE.close()
+if __name__ == '__main__':
+    main()
