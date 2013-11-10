@@ -5,6 +5,7 @@
 mozilla festival and calculate some totals """
 
 import json
+import re
 
 class MozfestDataProcessor(object):
     """This class processes twitter data"""
@@ -17,6 +18,8 @@ class MozfestDataProcessor(object):
 
         self.initial_data = json.load(self.data_file)
         self.totals_data = {}
+
+        self.cleaned_text_data = [x['text'].lower() for x in self.initial_data]
 
     def count_different_users(self):
         """ Count total users """
@@ -39,8 +42,8 @@ class MozfestDataProcessor(object):
         """ Count number os "awesome" """
 
         awesome_counter = 0
-        for data in self.initial_data:
-            awesome_counter += data['text'].count('awesome')
+        for text in self.cleaned_text_data:
+            awesome_counter += text.count('awesome')
 
         return awesome_counter
 
@@ -49,24 +52,32 @@ class MozfestDataProcessor(object):
 
         return len([x for x in self.initial_data if x['location'] is not None])
 
-    def count_extra_hashtags(self):
-        """ Count extra hashtags besides #mozfest_totals """
+    def count_total_hashtags(self):
+        """ Count total number of hashtags """
+        hashtags = []
+        for text in self.cleaned_text_data:
+            tweet_hashtags = re.findall(r'#\w+', text)
+            hashtags.extend(tweet_hashtags)
 
-        pass
+        return len(set(hashtags))
 
     def count_users_mentioned(self):
         """ Count total mentioned users """
+        users = []
+        for text in self.cleaned_text_data:
+            tweet_users = re.findall(r'@\w+', text)
+            users.extend(tweet_users)
 
-        pass
+        return len(set(users))
 
-    def process(self):
+    def process_totals(self):
         """ Do the process """
         self.totals_data['different_users'] = self.count_different_users()
         self.totals_data['total_tweets'] = self.count_total_tweets()
         self.totals_data['total_retweets'] = self.count_total_retweets()
         self.totals_data['awesome_count'] = self.awesome_count()
         self.totals_data['geo_tweets'] = self.count_geo_tweets()
-        self.totals_data['extra_hashtags'] = self.count_extra_hashtags()
+        self.totals_data['total_hashtags'] = self.count_total_hashtags()
         self.totals_data['users_mentioned'] = self.count_users_mentioned()
 
     def save_result(self):
@@ -79,7 +90,7 @@ def main():
     """ Start process """
     data_processor = MozfestDataProcessor('original_data/data_mozfest.json',
         'processed_data/mozfest_totals.json')
-    data_processor.process()
+    data_processor.process_totals()
     print data_processor.totals_data
     data_processor.save_result()
 

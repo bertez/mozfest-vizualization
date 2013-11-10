@@ -1,9 +1,9 @@
 {
-    "awesome_count": 308,
+    "awesome_count": 417,
     "total_tweets": 12182,
     "geo_tweets": 648,
     "different_users": 2399,
-    "users_mentioned": null,
-    "extra_hashtags": null,
+    "users_mentioned": 1696,
+    "total_hashtags": 1041,
     "total_retweets": 7942
 }
