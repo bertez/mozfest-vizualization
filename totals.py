@@ -16,36 +16,46 @@ class MozfestDataProcessor(object):
         self.initial_data = json.load(self.data_file)
         self.final_data = {}
 
-    def count_different_users(self):
+    @classmethod
+    def count_different_users(cls):
         """ Count total users """
-        pass
+        return 20
 
-    def count_total_tweets(self):
+    @classmethod
+    def count_total_tweets(cls):
         """ Count total tweets """
         pass
 
-    def count_total_retweets(self):
+    @classmethod
+    def count_total_retweets(cls):
         """ Count total retweets """
         pass
-
-    def awesome_count(self):
+    @classmethod
+    def awesome_count(cls):
         """ Count number os "awesome" """
         pass
 
-    def count_geo_tweets(self):
+    @classmethod
+    def count_geo_tweets(cls):
         """ Count total geolocalized tweets """
         pass
 
-    def count_extra_hashtags(self):
+    @classmethod
+    def count_extra_hashtags(cls):
         """ Count extra hashtags besides #mozfest_totals """
         pass
 
-    def count_users_mentioned(self):
+    @classmethod
+    def count_users_mentioned(cls):
         """ Count total mentioned users """
         pass
 
     def process(self):
         """ Do the process """
+        self.final_data['different_users'] = self.count_different_users()
+
+    def save_result(self):
+        """ Save result to export file """
         json.dump(self.final_data, self.export_file,
                   indent=4, separators=(',', ': '))
         self.export_file.close()
@@ -55,6 +65,7 @@ def main():
     data_processor = MozfestDataProcessor('original_data/data_mozfest.json',
         'processed_data/mozfest_totals.json')
     data_processor.process()
+    data_processor.save_result()
 
 if __name__ == '__main__':
     main()
